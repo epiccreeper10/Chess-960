@@ -38,7 +38,7 @@ namespace Chess
         ***************************************************************************/
         public Piece(Board board, Color color)
         {
-            FileImagesPath = Path.GetFullPath("./images");
+            FileImagesPath = "C:\\Users\\Dvallejo\\Downloads\\Chess-master\\Chess-master\\Chess-960\\Chess\\pieces\\images";
             CurrentPosition = null;
             ChessBoard = board;
             PieceColor = color;

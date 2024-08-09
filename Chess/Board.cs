@@ -1,5 +1,8 @@
 ﻿using System.Windows.Forms;
 using System.Collections.Generic;
+using Medallion;
+using System;
+using System.Diagnostics;
 
 namespace Chess
 {
@@ -11,8 +14,12 @@ namespace Chess
     * \date 16/03/2024
     * \version v1.0.1
     ***************************************************************************/
+
+
+
     partial class Board : Form
     {
+
         /// \brief Number of rows existing on the board.
         public int Rows = 8;
 
@@ -21,6 +28,12 @@ namespace Chess
 
         /// \brief Indicates if the game is in check.
         public bool _check;
+
+        // List of open positions
+        List<int> openPositions = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+        // Instantiate Random
+        private static Random rand = new Random();
 
         /// \brief Matrix containing all the pieces that are in play.
         private Piece[,] _piecesInPlay;
@@ -151,6 +164,8 @@ namespace Chess
         ***************************************************************************/
         private void InitializeBoard()
         {
+            bool KingBetweenRook = false;
+
             // Initialize board layout
             ShowBoard();
 
@@ -164,15 +179,54 @@ namespace Chess
                 }
             }
 
+
             // Place the white pieces
-            PlacePiece(new Rook(this, Color.White), new Position(7, 0));
-            PlacePiece(new Knight(this, Color.White), new Position(7, 1));
-            PlacePiece(new Bishop(this, Color.White), new Position(7, 2));
-            PlacePiece(new Queen(this, Color.White), new Position(7, 3));
-            PlacePiece(new King(this, Color.White), new Position(7, 4));
-            PlacePiece(new Bishop(this, Color.White), new Position(7, 5));
-            PlacePiece(new Knight(this, Color.White), new Position(7, 6));
-            PlacePiece(new Rook(this, Color.White), new Position(7, 7));
+
+            // Only even number squares / Light
+            int darkSquare = openPositions[Rand.Next(0, 4) * 2];
+            // Only Odd Number Squares / Dark
+            int lightSquare = openPositions[Rand.Next(0, 4) * 2 + 1];
+            PlacePiece(new Bishop(this, Color.White), new Position(7, darkSquare));
+            RemovePosition(darkSquare);
+            PlacePiece(new Bishop(this, Color.White), new Position(7, lightSquare));
+            RemovePosition(lightSquare);
+
+            int kingPos = 1;
+            int rookPos = 1;
+            int rook2Pos = 1;
+
+            while (!KingBetweenRook)
+            {
+                kingPos = openPositions[rand.Next(openPositions.Count)];
+                rookPos = openPositions[rand.Next(openPositions.Count)];
+                rook2Pos = openPositions[rand.Next(openPositions.Count)];
+
+
+                if (kingPos > rookPos && kingPos < rook2Pos || kingPos > rook2Pos && kingPos < rookPos)
+                {
+                    KingBetweenRook = true;
+                    RemovePosition(kingPos);
+                    RemovePosition(rookPos);
+                    RemovePosition(rook2Pos);
+                    PlacePiece(new King(this, Color.White), new Position(7, kingPos));
+                    PlacePiece(new Rook(this, Color.White), new Position(7, rookPos));
+                    PlacePiece(new Rook(this, Color.White), new Position(7, rook2Pos));
+                    break;
+                }
+                else
+                {
+                    KingBetweenRook = false;
+                }
+            }
+            int queenpos = openPositions[rand.Next(openPositions.Count)];
+            PlacePiece(new Queen(this, Color.White), new Position(7, queenpos));
+            RemovePosition(queenpos);
+            int knightpos = openPositions[rand.Next(openPositions.Count)];
+            PlacePiece(new Knight(this, Color.White), new Position(7, knightpos));
+            RemovePosition(knightpos);
+            int knight2pos = openPositions[rand.Next(openPositions.Count)];
+            PlacePiece(new Knight(this, Color.White), new Position(7, knight2pos));
+            RemovePosition(knight2pos);
             PlacePiece(new Pawn(this, Color.White), new Position(6, 7));
             PlacePiece(new Pawn(this, Color.White), new Position(6, 6));
             PlacePiece(new Pawn(this, Color.White), new Position(6, 5));
@@ -183,14 +237,14 @@ namespace Chess
             PlacePiece(new Pawn(this, Color.White), new Position(6, 0));
 
             // Place the black pieces
-            PlacePiece(new Rook(this, Color.Black), new Position(0, 0));
-            PlacePiece(new Knight(this, Color.Black), new Position(0, 1));
-            PlacePiece(new Bishop(this, Color.Black), new Position(0, 2));
-            PlacePiece(new Queen(this, Color.Black), new Position(0, 3));
-            PlacePiece(new King(this, Color.Black), new Position(0, 4));
-            PlacePiece(new Bishop(this, Color.Black), new Position(0, 5));
-            PlacePiece(new Knight(this, Color.Black), new Position(0, 6));
-            PlacePiece(new Rook(this, Color.Black), new Position(0, 7));
+            PlacePiece(new Rook(this, Color.Black), new Position(0, rookPos));
+            PlacePiece(new Knight(this, Color.Black), new Position(0, knightpos));
+            PlacePiece(new Bishop(this, Color.Black), new Position(0, lightSquare));
+            PlacePiece(new Queen(this, Color.Black), new Position(0, queenpos));
+            PlacePiece(new King(this, Color.Black), new Position(0, kingPos));
+            PlacePiece(new Bishop(this, Color.Black), new Position(0, darkSquare));
+            PlacePiece(new Knight(this, Color.Black), new Position(0, knight2pos));
+            PlacePiece(new Rook(this, Color.Black), new Position(0, rook2Pos));
             PlacePiece(new Pawn(this, Color.Black), new Position(1, 7));
             PlacePiece(new Pawn(this, Color.Black), new Position(1, 6));
             PlacePiece(new Pawn(this, Color.Black), new Position(1, 5));
@@ -664,6 +718,21 @@ namespace Chess
                 }
             }
             return false;
+        }
+
+        public void RemovePosition(int pos)
+        {
+            openPositions.Remove(pos);
+            Console.WriteLine("Placing piece at row: 7, column:" + pos);
+        }
+
+        public int RandPosition()
+        {
+            int Position = rand.Next(openPositions.Count);
+            RemovePosition(Position);
+            Console.Write(Position);
+            return Position;
+
         }
     }
 }

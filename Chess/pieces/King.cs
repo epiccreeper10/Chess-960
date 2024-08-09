@@ -109,7 +109,7 @@
             if (NumberOfMoves == 0 && !ReceivedCheck)
             {
                 // Kingside castling special move
-                Position positionRook1 = new Position(CurrentPosition.Row, CurrentPosition.Column + 3);
+                Position positionRook1 = new Position(CurrentPosition.Row, CurrentPosition.Column);
                 if (CheckRookAvailableForCastling(positionRook1))
                 {
                     // Check if the positions between the King and the Rook are empty
@@ -123,7 +123,7 @@
                 }
 
                 // Queenside castling special move
-                Position positionRook2 = new Position(CurrentPosition.Row, CurrentPosition.Column - 4);
+                Position positionRook2 = new Position(CurrentPosition.Row, CurrentPosition.Column);
                 if (CheckRookAvailableForCastling(positionRook2))
                 {
                     // Check if the positions between the King and the Rook are empty
