@@ -1,8 +1,4 @@
-# Chess Game
-
-![Chess board][board_1]
-
-![Chess board][board_2]
+# Chess-960 Game
 
 ## Description
 Chess is one of the most popular games in the world. Each player controls sixteen pieces, which can be white or black, with white always making the first move.
@@ -38,12 +34,6 @@ It can be said that the queen combines the movements of the rook and bishop, mov
 ### En passant
 When a pawn is on its fifth rank and the opponent's pawn moves two squares forward, the first pawn can capture it as if it had only moved one square forward, landing on the square behind the opponent's pawn.
 
-### Castling (Kingside)
-The king moves two squares toward the rook on its original square, and the rook moves to the square next to the king.
-
-### Castling (Queenside)
-The king moves two squares toward the rook on its original square, and the rook moves to the square next to the king on the opposite side.
-
 ### Promotion
 When a pawn reaches the eighth rank, it is promoted to a queen.
 
@@ -68,12 +58,5 @@ To document the source code to make it more understandable and explanatory, Doxy
 
 ### V1.0.1
 
-* Date: 2024-03-10. 
+* Date: 2024-08-8. 
 * This version introduces minor changes to the application, addresses small bugs, and translates both the code and documentation into English.
-
-## Author
-
-[@thiagoservulo](https://github.com/ThiagoServulo)
-
-[board_1]: images/chess_1.png
-[board_2]: images/chess_2.png
