@@ -1,7 +1,7 @@
 # Chess-960 Game
 
 ## Description
-Chess is one of the most popular games in the world. Each player controls sixteen pieces, which can be white or black, with white always making the first move.
+Chess-960 is a spin off of the most popular games in the world. Each player controls sixteen pieces, which can be white or black, with white always making the first move.
 
 During the game, when a player's king is directly threatened by an opponent's piece, it is said to be in check. In this position, the player must move the king out of danger, capture the threatening piece, or block the attack with one of their own pieces. However, blocking is not possible if the attacking piece is a knight since it can jump over opposing pieces.
 
